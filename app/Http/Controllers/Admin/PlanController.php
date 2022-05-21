@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdatePlan;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -48,12 +49,10 @@ class PlanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUpdatePlan $request)
     {
-        $data = $request->all();
-        $data['url'] = Str::slug($request->name);
 
-        $this->repository->create($data);
+        $this->repository->create($request->all());
 
         return redirect()->route('plans.index');
     }
@@ -66,7 +65,7 @@ class PlanController extends Controller
      */
     public function show($url)
     {
-        $plan = $this->request->where('url', $url)->first();
+        $plan = $this->repository->where('url', $url)->first();
 
         if(!$plan)
             return redirect()->back();
@@ -84,7 +83,7 @@ class PlanController extends Controller
      */
     public function edit($url)
     {
-        $plan = $this->request->where('url', $url)->first();
+        $plan = $this->repository->where('url', $url)->first();
 
         if(!$plan)
             return redirect()->back();
@@ -98,12 +97,19 @@ class PlanController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $url
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreUpdatePlan $request, $url)
     {
-        //
+        $plan = $this->repository->where('url', $url)->first();
+
+        if(!$plan)
+            return redirect()->back();
+
+        $plan->update($request->all());
+
+        return redirect()->route('plans.index');
     }
 
     /**
@@ -114,7 +120,7 @@ class PlanController extends Controller
      */
     public function destroy($url)
     {
-        $plan = $this->request->where('url', $url)->first();
+        $plan = $this->repository->where('url', $url)->first();
 
         if(!$plan)
             return redirect()->back();

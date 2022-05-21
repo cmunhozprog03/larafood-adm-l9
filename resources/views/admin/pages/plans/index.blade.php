@@ -26,7 +26,7 @@
         </div>
         <div class="col-sm-12 col-md-2 mt-2">
             <a href="{{ route('plans.create') }}"
-             class="btn btn-secondary btn-flat"> <i class="fas fa-plus-square fa-lg"></i> Adicionar</a>
+             class="btn btn-secondary btn-flat"> <i class="fas fa-plus-square fa-lg"></i>&nbsp; NOVO</a>
         </div>
     </div>
 
@@ -49,9 +49,15 @@
                             <td>{{ $plan->name }}</td>
                             <td class="text-right">R$ {{ number_format($plan->price, 2, ',', '.') }}</td>
                             <td class="text-center">
-                                <button class="btn btn-warning btn-flat btn-sm">
+                                <a href="{{ route('plans.show', $plan->url) }}"
+                                    class="btn btn-warning btn-flat btn-sm">
                                     <i class="fas fa-eye"></i>
-                                </button>
+                                </a>
+                                <a href="{{ route('plans.edit', $plan->url) }}"
+                                    class="btn btn-info btn-flat btn-sm">
+                                    <i class="fas fa-pen-alt"></i>
+                                </a>
+
                             </td>
                         </tr>
                     @empty
