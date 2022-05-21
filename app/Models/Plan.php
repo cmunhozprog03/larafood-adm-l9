@@ -11,6 +11,13 @@ class Plan extends Model
 
     protected $fillable = ['name', 'url', 'price', 'description'];
 
+
+    // One => Many
+    public function details()
+    {
+        return $this->hasMany(DetailPlan::class);
+    }
+
     public function search($filter = null)
     {
         $results = $this->where('name', 'LIKE', "%{$filter}%")

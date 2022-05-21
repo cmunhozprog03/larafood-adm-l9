@@ -1,19 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Planos')
+@section('title', 'Detalhes do Plano {$plan->name}')
 
 @section('content_header')
     <div class="row justify-content-around">
 
-        <div class="col-sm-12 col-md-5">
-            <h3>Listagem de Planos</h3>
+        <div class="col-sm-12 col-md-8 col-lg-8">
+            <h3>Detalhes do plano: <b>{{ $plan->name }}</b></h3>
+
         </div>
-        <div class="col-sm-12 col-md-5">
+        {{-- <div class="col-sm-12 col-md-5">
             <form action="{{ route('plans.search') }}" class="form form-inline mt-2" method="POST">
                 @csrf
-                {{-- <input type="text" class="form-control " name="filter" placeholder="Nome..."
-                    value="{{ $filters['filter'] ?? '' }}">
-                <button type="submit" class="btn btn-secondary"><i class="fas fa-search fa-lg"></i></button> --}}
 
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Procurar..." name="filter"
@@ -23,9 +21,9 @@
                     </div>
                   </div>
             </form>
-        </div>
-        <div class="col-sm-12 col-md-2 mt-2">
-            <a href="{{ route('plans.create') }}"
+        </div> --}}
+        <div class="col-sm-12 col-md-4  col-lg-2">
+            <a href="{{ route('plan.details.create', $plan->url) }}"
              class="btn btn-secondary btn-flat"> <i class="fas fa-plus-square fa-lg"></i>&nbsp; NOVO</a>
         </div>
     </div>
@@ -39,20 +37,15 @@
                 <thead class="text-center">
                     <tr class="font-weight-bold bg-secondary">
                         <th>Nome</th>
-                        <th>Valor</th>
                         <th width="150">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($plans as $plan)
+                    @forelse ($details as $detail)
                         <tr class="text-bold">
-                            <td>{{ $plan->name }}</td>
-                            <td class="text-right">R$ {{ number_format($plan->price, 2, ',', '.') }}</td>
+                            <td>{{ $detail->name }}</td>
+
                             <td class="text-center">
-                                <a href="{{ route('plan.details.index', $plan->url) }}"
-                                    class="btn btn-success btn-flat btn-sm">
-                                    <i class="fas fa-list-alt"></i>
-                                </a>
                                 <a href="{{ route('plans.show', $plan->url) }}"
                                     class="btn btn-warning btn-flat btn-sm">
                                     <i class="fas fa-eye"></i>
@@ -74,9 +67,9 @@
         </div>
         <div class="card-footer">
             @if (isset($filters))
-                {!! $plans->appends($filters)->links() !!}
+                {!! $details->appends($filters)->links() !!}
             @else
-                {!! $plans->links() !!}
+                {!! $details->links() !!}
             @endif
 
         </div>
